@@ -13,13 +13,6 @@ def welcome():
 
 @app.route('/predict', methods=['POST','GET'])
 def predict():
-   with open('./loan_predict.pickle', 'rb') as f:
-      model = pickle.load(f)
-    
-   model_columns = ['Credit_History', 'ApplicantIncome', 'CoapplicantIncome', 'LoanAmount',
-                     'Education', 'Self_Employed', 'Gender', 'Married', 'Dependents', 
-                     'Property_Area','Loan_Amount_Term'] 
-    
    if flask.request.method == 'GET':
       return "Prediction page. Try using post with params to get specific prediction."
 
@@ -27,8 +20,14 @@ def predict():
       try:
          json_ = request.get_json() 
          query_ = pd.DataFrame(json_)
+         model_columns = ['Credit_History', 'ApplicantIncome', 'CoapplicantIncome', 'LoanAmount',
+                     'Education', 'Self_Employed', 'Gender', 'Married', 'Dependents', 
+                     'Property_Area','Loan_Amount_Term']
          query = query_.reindex(columns = model_columns, fill_value=0)
-            
+         
+         with open('./loan_predict.pickle', 'rb') as f:
+            model = pickle.load(f)   
+         
          query['CoapplicantIncome'] = query.CoapplicantIncome.astype('int')
          query['ApplicantIncome'] = query.ApplicantIncome.astype('int')
          query['Total_Income'] = query['ApplicantIncome'] + query['CoapplicantIncome']
@@ -42,9 +41,9 @@ def predict():
                         'LoanAmount' , 'Property_Area', 'Education']]
             
          prediction = list(model.predict(query))
-         if prediction[0] == 0:
+         if prediction[0] == True:
             prediction = "Rejected"
-         if prediction[0] == 1:
+         if prediction[0] == False:
             prediction = "Approved"
          return jsonify({
                "Request": prediction
@@ -56,4 +55,4 @@ def predict():
                })
 
 if __name__ == "__main__":
-   app.run()
+   app.run(debug=True, host='0.0.0.0')
