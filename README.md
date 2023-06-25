@@ -32,7 +32,7 @@ The model was trained with accurancy score:
     1 - Training: 90 %
     2 - Test: 84.83 %
 
-## Challanges 
+## Challenges 
 The biggest challenge was to sink all those new concepts and tools in a narrow range of time.
 
 ## Future Goals
