@@ -17,7 +17,7 @@ I used many other features to decrease the weight of credit history
 ## Process
     1 - Explore the dataset to have better insight on its statistics and variable distribution
     
-    2 - Cleaning under the contrainst of not loosing too much fata. The data size is small
+    2 - Cleaning under the contrainst of not loosing too much data. The data size is small
 
     3 - Select the best combination features
 
